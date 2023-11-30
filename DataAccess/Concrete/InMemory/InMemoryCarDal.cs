@@ -1,9 +1,11 @@
 ﻿using DataAccess.Abstract;
+using DataAccess.DTOs;
 using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +19,7 @@ namespace DataAccess.Concrete.InMemory
         {
             _cars = new List<Car>
             {
-                new Car{ Id=1, BrandId=2, ColorId=3, ModelYear=1992, DailyPrice=100, Description="Açıklama:1992 Car 1" }
+                new Car{ Id=1, BrandId=2, ColorId=3, Name="Opel", ModelYear=1992, DailyPrice=100, Description="Açıklama:1992 Car 1" }
             };
         }
 
@@ -37,9 +39,29 @@ namespace DataAccess.Concrete.InMemory
             return _cars;
         }
 
-        public List<Car> GetById(int carId)
+        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
         {
-            return _cars.Where(c=>c.Id == carId).ToList();
+            throw new NotImplementedException();
+        }
+
+        public Car GetById(int carId)
+        {
+            return _cars.SingleOrDefault(c => c.Id == carId);
+        }
+
+        public Car GetById(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Car> GetCarsByBrandId(int brandId)
+        {
+            return _cars.Where(c => c.BrandId == brandId).ToList();
+        }
+
+        public List<Car> GetCarsByColorId(int colorId)
+        {
+            return _cars.Where(c => c.ColorId == colorId).ToList();
         }
 
         public void Update(Car car)
@@ -50,6 +72,16 @@ namespace DataAccess.Concrete.InMemory
             carToUpdate.ModelYear = car.ModelYear;
             carToUpdate.DailyPrice = car.DailyPrice;
             carToUpdate.Description = car.Description;
+        }
+
+        List<CarDetailsDto> ICarDal.GetCarsByBrandId(int brandId)
+        {
+            throw new NotImplementedException();
+        }
+
+        List<CarDetailsDto> ICarDal.GetCarsByColorId(int colorId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
